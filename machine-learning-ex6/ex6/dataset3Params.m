@@ -23,26 +23,27 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
-tempC = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
-tempSig = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+all_C = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+all_sig = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+
+smallest_error = intmax;
 
 %store all error values from loop in array
 all_errors = [];
 
 %compute all errors from each possible combination of C and sigma values
-for i = tempC
-	for j = tempSig
-		model= svmTrain(X, y, i, @(x1, x2) gaussianKernel(x1, x2, j)); 
-		predictions = svmPredict(model, Xval);
-		error = mean(double(predictions ~= yval));
-		all_errors = [all_errors; error,i,j];
-	endfor
-endfor
-%choose the smallest error and return the C and sigma values
-smallest_error = min(all_errors(:,1));
-C = all_errors(smallest_error,2);
-sigma = all_errors(smallest_error,3);
-
+for i = all_C
+for j = all_sig
+model = svmTrain(X, y, i, @(x1, x2) gaussianKernel(x1, x2, j));
+predictions = svmPredict(model, Xval);
+error = mean(double(predictions ~= yval));
+if (error < smallest_error)
+smallest_error = error;
+C = i;
+sigma = j;
+end
+end
+end
 
 
 % =========================================================================
