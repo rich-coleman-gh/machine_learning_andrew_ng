@@ -23,17 +23,12 @@ idx = zeros(size(X,1), 1);
 
 
 % initialize distance matrix
-D = zeros(size(X,1), K);
+m = size(X,1);
 
-for i = 1:K
-	temp = bsxfun(@minus,X,centroids(i));
-	d = sum(temp .^2, 2);
-	D(:,i) = d;
+for i = 1:m
+	[mindistance, idx(i)] = min(sqrt(sumsq(bsxfun(@minus, X(i,:), centroids), 2)));
 end
 
-[x, ix] = min(D,[],2);
-
-idx = ix;
 % =============================================================
 
 end

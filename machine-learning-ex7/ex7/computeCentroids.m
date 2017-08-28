@@ -27,11 +27,14 @@ centroids = zeros(K, n);
 %
 
 
+% create a matrix of booleans indicating which cluster each element in X is assigned to
+cluster_matrix = [idx == (1:K)];
+
+% get the number of elements that each cluster contains
+num_elem = sum(cluster_matrix == 1)';
 
 
-
-
-
+centroids = (cluster_matrix' * X) ./ num_elem;
 
 % =============================================================
 
