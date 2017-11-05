@@ -1,0 +1,3 @@
+# this file needs to get copied to .octaverc
+graphics_toolkit('gnuplot')
+
